@@ -1,120 +1,83 @@
 ```sql
+--1--
+SELECT course_id, COUNT(DISTINCT id) AS num_students
+FROM takes
+GROUP BY course_id;
+
+--2--
+SELECT course.dept_name, AVG(stu_count) AS avg_students
+FROM course1 
+JOIN (
+    SELECT course_id, COUNT(DISTINCT id) AS stu_count
+    FROM takes1
+    GROUP BY course_id
+) course_stu
+ON course_stu.course_id = course1.course_id
+GROUP BY course1.dept_name
+HAVING AVG(stu_count) > 10;
+
+--3--
+SELECT dept_name, COUNT(course_id) AS total
+FROM course1
+GROUP BY dept_name;
+
+--4--
+SELECT dept_name, AVG(salary) AS avg
+FROM instructor1
+GROUP BY dept_name
+HAVING AVG(salary) > 42000;
+
 --5--
-SELECT c.course_id, c.title
-FROM course c
-WHERE c.course_id IN (
-    SELECT course_id 
-    FROM section 
-    WHERE semester = 'Fall' AND year = 2009
-    INTERSECT
-    SELECT course_id 
-    FROM section 
-    WHERE semester = 'Spring' AND year = 2010
-);
+SELECT section1.course_id, section1.section_id, COUNT(DISTINCT takes1.id) AS stud
+FROM section1
+LEFT JOIN takes1 ON section1.course_id = takes1.course_id
+  AND section1.semester = takes1.semester
+  AND section1.year = takes1.year
+WHERE section1.semester = 'Spring' AND section1.year = 2009
+GROUP BY section1.course_id, section1.section_id;
 
 --6--
-SELECT COUNT(DISTINCT takes.id) AS total_students
-FROM takes
-WHERE takes.course_id IN (
-    SELECT teaches.course_id
-    FROM teaches
-    WHERE teaches.id = 10101
-);
+SELECT course1.course_id, prereq1.prereq_id
+FROM course1
+JOIN prereq1 ON course1.course_id = prereq1.course_id
+ORDER BY course1.course_id;
 
 --7--
-SELECT course_id
-FROM section
-WHERE semester = 'Fall' AND year = 2009
-  AND course_id NOT IN (
-      SELECT course_id
-      FROM section
-      WHERE semester = 'Spring' AND year = 2010
-  );
+SELECT id, name, dept_name, salary
+FROM instructor1
+ORDER BY salary DESC;
+
+--8--
+SELECT dept_name, AVG(salary) AS avg
+FROM instructor1
+GROUP BY dept_name
+HAVING AVG(salary) > 42000;
 
 --9--
-SELECT name
-FROM instructor
-WHERE salary > SOME (
-    SELECT salary
-    FROM instructor
-    WHERE dept_name = 'Biology'
-);
+
 
 --10--
-SELECT name
-FROM instructor
-WHERE salary > ALL (
-    SELECT salary
-    FROM instructor
-    WHERE dept_name = 'Biology'
-);
+
+
 
 --11--
-SELECT dept_name
-FROM instructor
-GROUP BY dept_name
-HAVING AVG(salary) = (
-    SELECT MAX(avg_salary)
-    FROM (
-        SELECT AVG(salary) AS avg_salary
-        FROM instructor
-        GROUP BY dept_name
-    ) AS dept_avg
-);
+
 
 --12--
-SELECT dept_name
-FROM department
-WHERE budget < (
-    SELECT AVG(salary)
-    FROM instructor
-);
 
---13--
-SELECT DISTINCT course_id
-FROM section s1
-WHERE semester = 'Fall' AND year = 2009
-  AND EXISTS (
-      SELECT 1
-      FROM section s2
-      WHERE s1.course_id = s2.course_id
-        AND s2.semester = 'Spring' AND s2.year = 2010
   );
 
 --14--
-SELECT id
-FROM student s
-WHERE NOT EXISTS (
-    SELECT course_id
-    FROM course
-    WHERE dept_name = 'Biology'
-      AND course_id NOT IN (
-          SELECT course_id
-          FROM takes
-          WHERE takes.id = s.id
-      )
-);
+
 
 --15--
-SELECT course_id
-FROM section
-WHERE year = 2009
-GROUP BY course_id
-HAVING COUNT(*) <= 1;
+
 
 --16--
-SELECT takes.id
-FROM takes
-JOIN course ON takes.course_id = course.course_id
-WHERE course.dept_name = 'CSE'
-GROUP BY takes.id
-HAVING COUNT(DISTINCT takes.course_id) >= 2;
+
 
 --17--
-SELECT dept_name, AVG(salary) AS avg_salary
-FROM instructor
-GROUP BY dept_name
-HAVING AVG(salary) > 42000;
+
 
 --18--
 
