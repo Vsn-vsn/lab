@@ -81,5 +81,6 @@ HAVING AVG(salary) > 42000;
 
 --18--
 
-[lnk](https://github.com/AniGP/MIT-Manipal-CSE-Labs-2022/blob/c71b69a87346b45bff12354e46a95ef000886525/Semester-4/DBS/Week5/Week5_Commands_LabSoln.sql)
+
 ```
+[lnk](https://github.com/AniGP/MIT-Manipal-CSE-Labs-2022/blob/c71b69a87346b45bff12354e46a95ef000886525/Semester-4/DBS/Week5/Week5_Commands_LabSoln.sql)
