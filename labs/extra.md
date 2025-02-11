@@ -84,3 +84,62 @@ HAVING AVG(salary) > 42000;
 
 ```
 [lnk](https://github.com/AniGP/MIT-Manipal-CSE-Labs-2022/blob/c71b69a87346b45bff12354e46a95ef000886525/Semester-4/DBS/Week5/Week5_Commands_LabSoln.sql)
+
+```cpp
+class Solution {
+  public:
+    void mergeSort(vector<int>& arr, int l, int r) {
+        if(l >= r) return;
+        int mid = (l+r)/2;
+        mergeSort(arr, l,mid);
+        mergeSort(arr,mid+1, r);
+        merge(arr,l,mid,r);
+    }
+    void merge(vector<int>& arr, int low, int mid, int high){
+        vector<int> temp;
+        int left = low;
+        int right = mid + 1;
+        while(left <= mid && right <= high){
+            if(arr[left] <= arr[right])
+                temp.push_back(arr[left++]);
+            else temp.push_back(arr[right++]);
+        }
+        while(left <= mid)
+            temp.push_back(arr[left++]);
+        while(right <= high)
+            temp.push_back(arr[right++]);
+        for(int i = low; i <= high; i++)
+            arr[i] = temp[i - low];
+    }
+};
+```
+
+```cpp
+class Solution {
+  public:
+    void quickSort(vector<int>& arr, int low, int high) {
+        if(low >= high) return;
+        int part = partition(arr, low, high);
+        quickSort(arr, low, part - 1);
+        quickSort(arr, part + 1, high);
+    }
+
+  public:
+    int partition(vector<int>& arr, int low, int high) {
+        int p = low;
+        int i = low;
+        int j = high;
+        while (i < j){
+            while(arr[i] <= arr[p] && i < high) i++;
+            while(arr[j] > arr[p] && j >= low + 1) j--;
+            if(i < j){ 
+                swap(arr[i], arr[j]);
+            }
+        }
+        swap(arr[j], arr[p]);
+        return j;
+    }
+};
+```
+
+
